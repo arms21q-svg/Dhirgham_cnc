@@ -1,0 +1,273 @@
+{
+  "metadata": {
+    "title": "Dargham CNC | Precision Wood CNC Designs",
+    "description": "Dargham CNC - Specialists in precision CNC wood designs and carving. Doors, decor, custom furniture and more."
+  },
+  "pages": {
+    "home": {
+      "title": "Dargham CNC | Precision Wood CNC Designs",
+      "description": "Dargham CNC - Specialists in precision CNC wood designs and carving. Doors, decor, custom furniture and more."
+    },
+    "works": {
+      "title": "Our Works | Dargham CNC",
+      "description": "Dargham CNC portfolio — wooden doors, wall decor, custom furniture, signs and carved panels."
+    },
+    "about": {
+      "title": "About Us | Dargham CNC",
+      "description": "Learn about Dargham CNC — a studio specializing in CNC wood and multi-material carving."
+    },
+    "services": {
+      "title": "Services | Dargham CNC",
+      "description": "Full CNC services: doors, wall decor, custom furniture, carved panels, signs and bespoke designs."
+    },
+    "contact": {
+      "title": "Contact Us | Dargham CNC",
+      "description": "Contact Dargham CNC for a free consultation or quote for your CNC project."
+    }
+  },
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "back": "Back to home"
+  },
+  "quote": {
+    "form": {
+      "title": "Request a Quote",
+      "subtitle": "Send your project details and get a quote within 24 hours",
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone number",
+      "material": "Material",
+      "materials": {
+        "wood": "Natural wood",
+        "mdf": "MDF",
+        "pvc": "PVC / Foam",
+        "acrylic": "Acrylic",
+        "aluminum": "Aluminum",
+        "other": "Other"
+      },
+      "width": "Width",
+      "height": "Height",
+      "thickness": "Thickness",
+      "dimensionPlaceholder": "e.g. 120 cm",
+      "quantity": "Quantity",
+      "description": "Project details",
+      "descriptionPlaceholder": "Describe your project: type, usage, required details...",
+      "submit": "Submit quote request",
+      "submitting": "Sending...",
+      "success": "Request sent! We'll contact you within 24 hours.",
+      "error": "Something went wrong. Please try again."
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "works": "Our Works",
+    "about": "About Us",
+    "services": "Services",
+    "contact": "Contact"
+  },
+  "hero": {
+    "badge": "Precision • Quality • Excellence",
+    "title": "CNC Wood Artistry",
+    "titleHighlight": "With Unmatched Precision",
+    "subtitle": "We transform your vision into reality with advanced CNC technology. Luxury designs for doors, decor, and custom furniture.",
+    "cta": "View Our Works",
+    "ctaSecondary": "Contact Us",
+    "imageCaption": "Luxury wood designs crafted with advanced CNC technology"
+  },
+  "stats": {
+    "projects": "Projects Completed",
+    "clients": "Happy Clients",
+    "experience": "Years Experience",
+    "precision": "Manufacturing Precision"
+  },
+  "featured": {
+    "title": "Our Portfolio",
+    "subtitle": "Showcase of our latest CNC carving and design projects — click any work for details",
+    "viewAll": "View All Works",
+    "viewDetails": "View Details",
+    "modalHint": "Request a similar project or a fully custom design tailored to your needs.",
+    "requestSimilar": "Request Similar Project",
+    "empty": "No featured works at the moment"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Complete CNC wood solutions for all your needs",
+    "viewAll": "All Services",
+    "empty": "No services to display yet — add works from the admin panel",
+    "items": {
+      "doors": {
+        "title": "Wooden Doors",
+        "description": "Design and manufacture luxury wooden doors with precise CNC details"
+      },
+      "decor": {
+        "title": "Wall Decor",
+        "description": "3D wall panels and carvings that add an artistic touch to your space"
+      },
+      "furniture": {
+        "title": "Custom Furniture",
+        "description": "Unique furniture pieces designed to your specifications with highest quality"
+      },
+      "panels": {
+        "title": "Carved Panels",
+        "description": "Carved wood panels with modern and classic designs"
+      },
+      "signs": {
+        "title": "Signs & Logos",
+        "description": "Carved wooden signs for shops, offices, and homes"
+      },
+      "custom": {
+        "title": "Custom Designs",
+        "description": "We execute any design you imagine with professional CNC precision"
+      }
+    }
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Passion for wood, precision in execution",
+    "description": "Dargham CNC is a studio specializing in CNC wood designs and carving. We combine traditional craftsmanship with modern technology to deliver luxury products that exceed our clients' expectations.",
+    "mission": "Our Mission",
+    "missionText": "Deliver CNC wood designs with exceptional quality and precision, while meeting deadlines and ensuring client satisfaction.",
+    "vision": "Our Vision",
+    "visionText": "To be the first choice in CNC woodwork in the region, known for creativity, quality, and professionalism.",
+    "values": {
+      "quality": "Quality",
+      "qualityDesc": "We use the finest wood types and advanced CNC equipment",
+      "precision": "Precision",
+      "precisionDesc": "Every detail executed with millimeter-level accuracy",
+      "creativity": "Creativity",
+      "creativityDesc": "We transform your ideas into unique and distinctive designs"
+    },
+    "learnMore": "Learn More About Us",
+    "highlight1": "Specialized expertise in CNC wood carving and design",
+    "highlight2": "Professional team committed to deadlines and quality",
+    "highlight3": "Custom solutions for homes, shops, and offices"
+  },
+  "whyChoose": {
+    "eyebrow": "Why Us",
+    "title": "Why Choose Dargham CNC?",
+    "subtitle": "We combine engineering precision, fine craftsmanship, and the latest manufacturing technology",
+    "items": {
+      "precision": {
+        "title": "Ultimate Precision",
+        "description": "Millimeter-level detail executed with advanced CNC machinery"
+      },
+      "quality": {
+        "title": "Premium Quality",
+        "description": "Carefully selected wood with professional finishing built to last"
+      },
+      "speed": {
+        "title": "Fast Delivery",
+        "description": "Clear timelines and on-schedule delivery from design to handover"
+      },
+      "technology": {
+        "title": "Modern Technology",
+        "description": "Advanced design software and state-of-the-art CNC equipment"
+      }
+    }
+  },
+  "contactCta": {
+    "title": "Ready to Start Your Project?",
+    "subtitle": "Contact us now — free consultation and a quote within 24 hours",
+    "whatsapp": "WhatsApp",
+    "call": "Phone Call",
+    "request": "Send Request"
+  },
+  "works": {
+    "title": "Our Works",
+    "subtitle": "Complete gallery of our latest CNC wood projects",
+    "filterAll": "All",
+    "emptyCategory": "No works in this category",
+    "viewDetails": "View Details",
+    "requestSimilar": "Request a Similar Project",
+    "noDescription": "No description for this work — contact us for details",
+    "categories": {
+      "doors": "Doors",
+      "decor": "Decor",
+      "furniture": "Furniture",
+      "panels": "Panels",
+      "signs": "Signs"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're here to help bring your vision to life",
+    "description": "Contact Dargham CNC for a free consultation or quote for your CNC project.",
+    "form": {
+      "name": "Full Name",
+      "namePlaceholder": "Enter your name",
+      "email": "Email Address",
+      "emailPlaceholder": "example@email.com",
+      "phone": "Phone Number",
+      "phonePlaceholder": "+966 5xxxxxxxx",
+      "message": "Your Message",
+      "messagePlaceholder": "Describe your project or inquiry...",
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "success": "Your message has been sent successfully! We'll contact you soon.",
+      "error": "An error occurred. Please try again."
+    },
+    "info": {
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "hours": "Working Hours",
+      "hoursValue": "Sat - Thu: 8 AM - 6 PM"
+    }
+  },
+  "footer": {
+    "description": "Specialists in precision CNC wood designs and craftsmanship.",
+    "quickLinks": "Quick Links",
+    "contactUs": "Contact Us",
+    "followUs": "Follow Us",
+    "rights": "All rights reserved"
+  },
+  "ai": {
+    "title": "Dargham Assistant",
+    "subtitle": "CNC expert — wood, MDF, PVC, acrylic",
+    "open": "Open AI assistant",
+    "close": "Close",
+    "send": "Send",
+    "clear": "Clear conversation",
+    "retry": "Retry",
+    "attachImage": "Attach design image",
+    "removeImage": "Remove image",
+    "welcome": "Hello! I'm Dargham CNC expert",
+    "welcomeHint": "Ask about materials, rough quotes, or upload a design for analysis",
+    "inputPlaceholder": "Type your question or attach an image...",
+    "suggestions": [
+      "Best material for an exterior door?",
+      "Rough quote for wall decor",
+      "MDF vs PVC difference?",
+      "Show available door projects"
+    ],
+    "errors": {
+      "AI_ERROR": "Something went wrong. Please try again.",
+      "AI_DISABLED": "The AI assistant is currently disabled.",
+      "AI_NOT_CONFIGURED": "The assistant is not available right now.",
+      "RATE_LIMITED": "Too many requests. Please wait a moment and try again.",
+      "INVALID_INPUT": "Invalid message. Please rephrase.",
+      "SERVER_ERROR": "Server error. Please try again later."
+    }
+  },
+  "floating": {
+    "title": "Quick Contact",
+    "location": "Location",
+    "whatsapp": "WhatsApp",
+    "call": "Call"
+  },
+  "locale": {
+    "switchLabel": "Language",
+    "switchToEn": "English",
+    "switchToAr": "Arabic"
+  },
+  "theme": {
+    "mode": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  }
+}

@@ -1,0 +1,32 @@
+import { PrismaClient } from "@prisma/client";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+function createPrismaClient() {
+  const adapter = new PrismaBetterSqlite3({
+    url: process.env.DATABASE_URL ?? "file:./dev.db",
+  });
+  return new PrismaClient({ adapter });
+}
+
+function isStalePrismaClient(client: PrismaClient) {
+  return !("heroSlide" in client) || !("homePageSettings" in client);
+}
+
+function getPrismaClient() {
+  const cached = globalForPrisma.prisma;
+  if (cached && !isStalePrismaClient(cached)) {
+    return cached;
+  }
+
+  const client = createPrismaClient();
+  if (process.env.NODE_ENV !== "production") {
+    globalForPrisma.prisma = client;
+  }
+  return client;
+}
+
+export const prisma = getPrismaClient();

@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SiteSettings {
+  id           Int      @id @default(1)
+  phone        String
+  phoneDisplay String
+  whatsapp     String
+  email        String
+  addressAr    String
+  addressEn    String
+  locationUrl  String
+  instagramUrl String   @default("")
+  twitterUrl   String   @default("")
+  facebookUrl  String   @default("")
+  snapchatUrl  String   @default("")
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id            String   @id @default(cuid())
+  titleAr       String
+  titleEn       String
+  descriptionAr String?
+  descriptionEn String?
+  category      String
+  imageUrl      String
+  featured      Boolean  @default(false)
+  order         Int      @default(0)
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model QuoteRequest {
+  id              String   @id @default(cuid())
+  name            String
+  email           String
+  phone           String
+  material        String
+  width           String?
+  height          String?
+  thickness       String?
+  quantity        Int      @default(1)
+  description     String
+  locale          String   @default("ar")
+  status          String   @default("pending")
+  estimatedPrice  String?
+  adminNotes      String?
+  read            Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Service {
+  id            String  @id @default(cuid())
+  titleAr       String
+  titleEn       String
+  descriptionAr String
+  descriptionEn String
+  icon          String
+  order         Int     @default(0)
+  active        Boolean @default(true)
+}
+
+model Faq {
+  id         String   @id @default(cuid())
+  questionAr String
+  questionEn String
+  answerAr   String
+  answerEn   String
+  order      Int      @default(0)
+  published  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model AiSettings {
+  id        Int      @id @default(1)
+  enabled   Boolean  @default(false)
+  model     String   @default("gemini-2.5-flash")
+  updatedAt DateTime @updatedAt
+}
+
+model SiteStats {
+  id           Int      @id @default(1)
+  visitorCount Int      @default(0)
+  updatedAt    DateTime @updatedAt
+}
+
+model HomePageSettings {
+  id         Int      @id @default(1)
+  subtitleAr String
+  subtitleEn String
+  updatedAt  DateTime @updatedAt
+}
+
+model HeroSlide {
+  id        String   @id @default(cuid())
+  titleAr   String
+  titleEn   String
+  captionAr String
+  captionEn String
+  imageUrl  String
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
