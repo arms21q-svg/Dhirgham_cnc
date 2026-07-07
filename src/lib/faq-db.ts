@@ -1,5 +1,6 @@
 import { unstable_cache, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { defaultFaqItems } from "@/data/faq-defaults";
 
 export type FaqInput = {
   questionAr: string;
@@ -10,12 +11,33 @@ export type FaqInput = {
   published?: boolean;
 };
 
-const getCachedPublishedFaqs = unstable_cache(
-  () =>
-    prisma.faq.findMany({
+function getFallbackFaqs() {
+  return defaultFaqItems.map((item, index) => ({
+    id: `fallback-faq-${index}`,
+    questionAr: item.questionAr,
+    questionEn: item.questionEn,
+    answerAr: item.answerAr,
+    answerEn: item.answerEn,
+    order: item.order,
+    published: true,
+    createdAt: new Date(0),
+    updatedAt: new Date(0),
+  }));
+}
+
+async function fetchPublishedFaqs() {
+  try {
+    return await prisma.faq.findMany({
       where: { published: true },
       orderBy: [{ order: "asc" }, { createdAt: "asc" }],
-    }),
+    });
+  } catch {
+    return getFallbackFaqs();
+  }
+}
+
+const getCachedPublishedFaqs = unstable_cache(
+  fetchPublishedFaqs,
   ["published-faqs"],
   { revalidate: 120, tags: ["faq"] }
 );

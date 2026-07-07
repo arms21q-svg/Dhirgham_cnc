@@ -1,6 +1,6 @@
 import { unstable_cache, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import type { ProjectCategory } from "@/data/portfolio";
+import { projects as fallbackProjects, type ProjectCategory } from "@/data/portfolio";
 
 export type ProjectRecord = {
   id: string;
@@ -27,22 +27,51 @@ export type ProjectInput = {
   published?: boolean;
 };
 
-const getCachedPublishedProjects = unstable_cache(
-  () =>
-    prisma.project.findMany({
+function getFallbackProjects(): ProjectRecord[] {
+  return fallbackProjects.map((project, index) => ({
+    id: project.id,
+    titleAr: project.titleAr,
+    titleEn: project.titleEn,
+    descriptionAr: null,
+    descriptionEn: null,
+    category: project.category,
+    imageUrl: project.image,
+    featured: project.featured,
+    order: index,
+    published: true,
+  }));
+}
+
+async function fetchPublishedProjects() {
+  try {
+    return await prisma.project.findMany({
       where: { published: true },
       orderBy: [{ order: "asc" }, { createdAt: "desc" }],
-    }),
+    });
+  } catch {
+    return getFallbackProjects();
+  }
+}
+
+async function fetchFeaturedProjects() {
+  try {
+    return await prisma.project.findMany({
+      where: { published: true, featured: true },
+      orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+    });
+  } catch {
+    return getFallbackProjects().filter((project) => project.featured);
+  }
+}
+
+const getCachedPublishedProjects = unstable_cache(
+  fetchPublishedProjects,
   ["published-projects"],
   { revalidate: 120, tags: ["projects"] }
 );
 
 const getCachedFeaturedProjects = unstable_cache(
-  () =>
-    prisma.project.findMany({
-      where: { published: true, featured: true },
-      orderBy: [{ order: "asc" }, { createdAt: "desc" }],
-    }),
+  fetchFeaturedProjects,
   ["featured-projects"],
   { revalidate: 120, tags: ["projects"] }
 );
