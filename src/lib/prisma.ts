@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { resolveDatabaseUrl } from "@/lib/database-url";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -7,7 +8,7 @@ const globalForPrisma = globalThis as unknown as {
 
 function createPrismaClient() {
   const adapter = new PrismaBetterSqlite3({
-    url: process.env.DATABASE_URL ?? "file:./dev.db",
+    url: resolveDatabaseUrl(),
   });
   return new PrismaClient({ adapter });
 }
@@ -29,4 +30,12 @@ function getPrismaClient() {
   return client;
 }
 
-export const prisma = getPrismaClient();
+export const prisma = new Proxy({} as PrismaClient, {
+  get(_target, property) {
+    const client = getPrismaClient();
+    const value = client[property as keyof PrismaClient];
+    return typeof value === "function"
+      ? (value as (...args: unknown[]) => unknown).bind(client)
+      : value;
+  },
+});

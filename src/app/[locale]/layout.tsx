@@ -50,7 +50,12 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
   const isRtl = locale === "ar";
-  const initialTheme = await getTheme();
+  let initialTheme: Awaited<ReturnType<typeof getTheme>> | undefined;
+  try {
+    initialTheme = await getTheme();
+  } catch {
+    initialTheme = undefined;
+  }
   const siteSettings = await getSiteSettings();
   const aiSettings = await getPublicAiSettings();
   const jsonLd = buildLocalBusinessJsonLd(siteSettings, locale);

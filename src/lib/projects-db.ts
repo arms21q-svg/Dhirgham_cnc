@@ -96,13 +96,21 @@ export async function getProjectsByCategory(category: ProjectCategory | "all") {
 }
 
 export async function getAllProjectsAdmin() {
-  return prisma.project.findMany({
-    orderBy: [{ order: "asc" }, { createdAt: "desc" }],
-  });
+  try {
+    return await prisma.project.findMany({
+      orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+    });
+  } catch {
+    return getFallbackProjects();
+  }
 }
 
 export async function getProjectById(id: string) {
-  return prisma.project.findUnique({ where: { id } });
+  try {
+    return await prisma.project.findUnique({ where: { id } });
+  } catch {
+    return getFallbackProjects().find((project) => project.id === id) ?? null;
+  }
 }
 
 export function revalidateProjectsCache() {

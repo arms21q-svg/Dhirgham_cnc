@@ -47,13 +47,21 @@ export async function getPublishedFaqs() {
 }
 
 export async function getAllFaqsAdmin() {
-  return prisma.faq.findMany({
-    orderBy: [{ order: "asc" }, { createdAt: "asc" }],
-  });
+  try {
+    return await prisma.faq.findMany({
+      orderBy: [{ order: "asc" }, { createdAt: "asc" }],
+    });
+  } catch {
+    return getFallbackFaqs();
+  }
 }
 
 export async function getFaqById(id: string) {
-  return prisma.faq.findUnique({ where: { id } });
+  try {
+    return await prisma.faq.findUnique({ where: { id } });
+  } catch {
+    return getFallbackFaqs().find((faq) => faq.id === id) ?? null;
+  }
 }
 
 function revalidateFaqCache() {

@@ -47,6 +47,14 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: [
+    "@prisma/client",
+    "@prisma/adapter-better-sqlite3",
+    "better-sqlite3",
+  ],
+  outputFileTracingIncludes: {
+    "/**/*": ["./dev.db"],
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
