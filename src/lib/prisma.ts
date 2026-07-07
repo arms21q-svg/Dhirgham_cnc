@@ -1,17 +1,9 @@
-import { PrismaClient } from "@prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import { resolveDatabaseUrl } from "@/lib/database-url";
+import type { PrismaClient } from "@prisma/client";
+import { createPrismaClient } from "@/lib/create-prisma-client";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
-
-function createPrismaClient() {
-  const adapter = new PrismaBetterSqlite3({
-    url: resolveDatabaseUrl(),
-  });
-  return new PrismaClient({ adapter });
-}
 
 function isStalePrismaClient(client: PrismaClient) {
   return !("heroSlide" in client) || !("homePageSettings" in client);

@@ -59,13 +59,13 @@ export function AiSettingsCard() {
       <CardHeader>
         <CardTitle>المساعد الذكي (AI)</CardTitle>
         <p className="text-sm text-muted-foreground">
-          تفعيل مساعد الدردشة للزوار. المفتاح يُخزَّن في ملف .env.local فقط.
+          تفعيل مساعد الدردشة للزوار. أضف GEMINI_API_KEY في متغيرات البيئة (Vercel أو .env.local).
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
         {!apiKeyConfigured && (
           <p className="rounded-lg bg-amber-500/10 p-3 text-sm text-amber-700 dark:text-amber-400">
-            أضف GEMINI_API_KEY في ملف .env.local لتفعيل المساعد.
+            أضف GEMINI_API_KEY في Vercel → Settings → Environment Variables، ثم أعد النشر.
           </p>
         )}
 

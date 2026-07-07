@@ -1,10 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-export function resolveDatabaseUrl(): string {
-  const configured = process.env.DATABASE_URL?.trim();
-
-  if (configured && !configured.startsWith("file:./")) {
+export function resolveLocalDatabaseUrl(configured = "file:./dev.db"): string {
+  if (!configured.startsWith("file:./")) {
     return configured;
   }
 
@@ -28,5 +26,5 @@ export function resolveDatabaseUrl(): string {
     return `file:${sourceDb}`;
   }
 
-  return configured ?? "file:./dev.db";
+  return configured;
 }
