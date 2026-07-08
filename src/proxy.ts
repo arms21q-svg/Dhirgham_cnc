@@ -5,9 +5,10 @@ import { routing } from "./i18n/routing";
 
 const handleI18nRouting = createMiddleware(routing);
 
-export function proxy(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Admin panel is Arabic-only and should skip locale routing
   if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
     return NextResponse.next();
   }
