@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -13,27 +13,21 @@ type AiSettingsForm = {
   model: string;
 };
 
-export function AiSettingsCard() {
+type AiSettingsCardProps = {
+  initialSettings: AiSettingsForm;
+  apiKeyConfigured: boolean;
+};
+
+export function AiSettingsCard({
+  initialSettings,
+  apiKeyConfigured,
+}: AiSettingsCardProps) {
   const router = useRouter();
-  const [form, setForm] = useState<AiSettingsForm | null>(null);
-  const [apiKeyConfigured, setApiKeyConfigured] = useState(false);
+  const [form, setForm] = useState<AiSettingsForm>(initialSettings);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    fetch("/api/admin/ai-settings")
-      .then((r) => r.json())
-      .then((d) => {
-        setForm({
-          enabled: d.settings?.enabled ?? false,
-          model: d.settings?.model ?? AI_MODELS[0].id,
-        });
-        setApiKeyConfigured(d.apiKeyConfigured ?? false);
-      });
-  }, []);
-
   async function handleSave() {
-    if (!form) return;
     setLoading(true);
     setMessage("");
 
@@ -51,8 +45,6 @@ export function AiSettingsCard() {
     }
     setLoading(false);
   }
-
-  if (!form) return null;
 
   return (
     <Card>
@@ -72,7 +64,7 @@ export function AiSettingsCard() {
         <label className="flex items-center gap-2 cursor-pointer">
           <Checkbox
             checked={form.enabled}
-            onCheckedChange={(v) => setForm((prev) => prev && { ...prev, enabled: v === true })}
+            onCheckedChange={(v) => setForm((prev) => ({ ...prev, enabled: v === true }))}
             disabled={!apiKeyConfigured}
           />
           <span className="text-sm">تفعيل المساعد الذكي في الموقع</span>
@@ -83,7 +75,7 @@ export function AiSettingsCard() {
           <select
             id="aiModel"
             value={form.model}
-            onChange={(e) => setForm((prev) => prev && { ...prev, model: e.target.value })}
+            onChange={(e) => setForm((prev) => ({ ...prev, model: e.target.value }))}
             className="mt-1.5 flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm"
           >
             {AI_MODELS.map((m) => (
@@ -109,7 +101,7 @@ export function AiSettingsCard() {
         <Button
           type="button"
           onClick={handleSave}
-          disabled={loading}
+          disabled={loading || !apiKeyConfigured}
           className="bg-navy text-white hover:bg-navy-light"
         >
           {loading ? "جاري الحفظ..." : "حفظ إعدادات AI"}

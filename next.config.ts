@@ -14,8 +14,9 @@ const contentSecurityPolicy = [
   scriptSrc,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://images.unsplash.com https:",
-  "font-src 'self'",
-  "connect-src 'self'",
+  "font-src 'self' data:",
+  // Self APIs + Gemini (server calls are separate; keep browser AI endpoints allowed)
+  "connect-src 'self' https://generativelanguage.googleapis.com https://*.googleapis.com",
   "frame-ancestors 'self'",
   "base-uri 'self'",
   "form-action 'self'",

@@ -44,10 +44,11 @@ function getFallbackProjects(): ProjectRecord[] {
 
 async function fetchPublishedProjects() {
   try {
-    return await prisma.project.findMany({
+    const rows = await prisma.project.findMany({
       where: { published: true },
       orderBy: [{ order: "asc" }, { createdAt: "desc" }],
     });
+    return rows.length > 0 ? rows : getFallbackProjects();
   } catch {
     return getFallbackProjects();
   }
@@ -55,10 +56,13 @@ async function fetchPublishedProjects() {
 
 async function fetchFeaturedProjects() {
   try {
-    return await prisma.project.findMany({
+    const rows = await prisma.project.findMany({
       where: { published: true, featured: true },
       orderBy: [{ order: "asc" }, { createdAt: "desc" }],
     });
+    return rows.length > 0
+      ? rows
+      : getFallbackProjects().filter((project) => project.featured);
   } catch {
     return getFallbackProjects().filter((project) => project.featured);
   }

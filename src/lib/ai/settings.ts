@@ -16,13 +16,31 @@ const defaults: AiSettingsRecord = {
   model: DEFAULT_AI_MODEL,
 };
 
+function envForceEnableAi() {
+  return process.env.AI_ENABLED === "true";
+}
+
 async function fetchAiSettings(): Promise<AiSettingsRecord> {
+  const keyConfigured = Boolean(process.env.GEMINI_API_KEY?.trim());
+  const forceEnable = envForceEnableAi();
+
   try {
     const row = await prisma.aiSettings.findUnique({ where: { id: 1 } });
-    if (!row) return defaults;
-    return { enabled: row.enabled, model: row.model };
+    if (!row) {
+      return {
+        enabled: forceEnable && keyConfigured,
+        model: DEFAULT_AI_MODEL,
+      };
+    }
+    return {
+      enabled: forceEnable ? true : row.enabled,
+      model: row.model || DEFAULT_AI_MODEL,
+    };
   } catch {
-    return defaults;
+    return {
+      ...defaults,
+      enabled: forceEnable && keyConfigured,
+    };
   }
 }
 
@@ -37,7 +55,7 @@ export async function getAiSettings(): Promise<AiSettingsRecord> {
 
 export async function getPublicAiSettings(): Promise<PublicAiSettings> {
   const settings = await getAiSettings();
-  return { enabled: settings.enabled };
+  return { enabled: settings.enabled && isAiConfigured() };
 }
 
 export type AiSettingsInput = {

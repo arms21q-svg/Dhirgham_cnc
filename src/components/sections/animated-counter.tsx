@@ -17,13 +17,18 @@ function parseValue(raw: string): { target: number; suffix: string; decimals: nu
 
 export function AnimatedCounter({ value, label }: AnimatedCounterProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [display, setDisplay] = useState("0");
   const { target, suffix, decimals } = parseValue(value);
+  const finalDisplay =
+    decimals > 0 ? target.toFixed(decimals) : Math.round(target).toString();
+  const [display, setDisplay] = useState(finalDisplay);
   const hasAnimated = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -43,9 +48,13 @@ export function AnimatedCounter({ value, label }: AnimatedCounterProps) {
           if (progress < 1) requestAnimationFrame(tick);
         }
 
-        requestAnimationFrame(tick);
+        // Start from zero only once visible (async via rAF — not sync in effect body)
+        requestAnimationFrame((now) => {
+          setDisplay(decimals > 0 ? (0).toFixed(decimals) : "0");
+          tick(now);
+        });
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     );
 
     observer.observe(el);

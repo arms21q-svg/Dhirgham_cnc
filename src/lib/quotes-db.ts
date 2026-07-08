@@ -31,13 +31,21 @@ export async function createQuoteRequest(data: QuoteInput) {
 }
 
 export async function getAllQuotes() {
-  return prisma.quoteRequest.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  try {
+    return await prisma.quoteRequest.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+  } catch {
+    return [];
+  }
 }
 
 export async function getUnreadQuoteCount() {
-  return prisma.quoteRequest.count({ where: { read: false } });
+  try {
+    return await prisma.quoteRequest.count({ where: { read: false } });
+  } catch {
+    return 0;
+  }
 }
 
 export async function updateQuote(

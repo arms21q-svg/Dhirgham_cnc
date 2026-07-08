@@ -22,7 +22,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true }, { status: 201 });
     }
 
-    const { _hp: _, ...quoteData } = data;
+    const { _hp: _honeypot, ...quoteData } = data;
+    void _honeypot;
     await createQuoteRequest(quoteData);
 
     void safeNotify(() => notifyQuoteSubmission(quoteData));

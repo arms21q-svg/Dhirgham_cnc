@@ -36,10 +36,11 @@ async function fetchHomePageSettings(): Promise<HomePageSettingsRecord> {
 
 async function fetchActiveHeroSlides(): Promise<HeroSlideRecord[]> {
   try {
-    return prisma.heroSlide.findMany({
+    const rows = await prisma.heroSlide.findMany({
       where: { active: true },
       orderBy: [{ order: "asc" }, { createdAt: "asc" }],
     });
+    return rows;
   } catch {
     return [];
   }

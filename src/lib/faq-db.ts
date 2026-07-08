@@ -27,10 +27,11 @@ function getFallbackFaqs() {
 
 async function fetchPublishedFaqs() {
   try {
-    return await prisma.faq.findMany({
+    const rows = await prisma.faq.findMany({
       where: { published: true },
       orderBy: [{ order: "asc" }, { createdAt: "asc" }],
     });
+    return rows.length > 0 ? rows : getFallbackFaqs();
   } catch {
     return getFallbackFaqs();
   }

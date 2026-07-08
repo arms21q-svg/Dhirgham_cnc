@@ -46,8 +46,14 @@ async function main() {
 
   await prisma.aiSettings.upsert({
     where: { id: 1 },
-    update: {},
-    create: { id: 1, enabled: false, model: "gemini-2.5-flash" },
+    update: process.env.GEMINI_API_KEY?.trim()
+      ? { enabled: true }
+      : {},
+    create: {
+      id: 1,
+      enabled: Boolean(process.env.GEMINI_API_KEY?.trim()),
+      model: "gemini-2.5-flash",
+    },
   });
 
   await prisma.siteStats.upsert({

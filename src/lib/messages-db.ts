@@ -1,13 +1,21 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getAllContactMessages() {
-  return prisma.contactMessage.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  try {
+    return await prisma.contactMessage.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+  } catch {
+    return [];
+  }
 }
 
 export async function getUnreadContactCount() {
-  return prisma.contactMessage.count({ where: { read: false } });
+  try {
+    return await prisma.contactMessage.count({ where: { read: false } });
+  } catch {
+    return 0;
+  }
 }
 
 export async function markContactMessageRead(id: string, read: boolean) {
