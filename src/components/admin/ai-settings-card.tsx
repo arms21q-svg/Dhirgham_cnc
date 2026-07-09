@@ -16,11 +16,15 @@ type AiSettingsForm = {
 type AiSettingsCardProps = {
   initialSettings: AiSettingsForm;
   apiKeyConfigured: boolean;
+  keyFormatWarning?: string | null;
+  runtime?: string;
 };
 
 export function AiSettingsCard({
   initialSettings,
   apiKeyConfigured,
+  keyFormatWarning,
+  runtime,
 }: AiSettingsCardProps) {
   const router = useRouter();
   const [form, setForm] = useState<AiSettingsForm>(initialSettings);
@@ -57,7 +61,20 @@ export function AiSettingsCard({
       <CardContent className="space-y-4">
         {!apiKeyConfigured && (
           <p className="rounded-lg bg-amber-500/10 p-3 text-sm text-amber-700 dark:text-amber-400">
-            أضف GEMINI_API_KEY في Vercel → Settings → Environment Variables، ثم أعد النشر.
+            أضف GEMINI_API_KEY في Vercel → Settings → Environment Variables، ثم عيّن AI_ENABLED=true
+            وأعد النشر.
+          </p>
+        )}
+
+        {apiKeyConfigured && keyFormatWarning && (
+          <p className="rounded-lg bg-red-500/10 p-3 text-sm text-red-700 dark:text-red-400">
+            {keyFormatWarning}
+          </p>
+        )}
+
+        {apiKeyConfigured && runtime === "vercel" && (
+          <p className="rounded-lg bg-blue-500/10 p-3 text-sm text-blue-700 dark:text-blue-400">
+            يعمل على Vercel. راجع Runtime Logs وابحث عن [AI] لمعرفة سبب أي خطأ.
           </p>
         )}
 

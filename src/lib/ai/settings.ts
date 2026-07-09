@@ -1,6 +1,12 @@
 import { unstable_cache, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { DEFAULT_AI_MODEL } from "@/lib/ai/config";
+import {
+  getGeminiApiKeyDiagnostics,
+  isGeminiApiKeyConfigured,
+  validateGeminiApiKeyFormat,
+} from "@/lib/ai/env";
+import { logAiEvent } from "@/lib/ai/logger";
 
 export type AiSettingsRecord = {
   enabled: boolean;
@@ -11,9 +17,12 @@ export type PublicAiSettings = {
   enabled: boolean;
 };
 
-const defaults: AiSettingsRecord = {
-  enabled: false,
-  model: DEFAULT_AI_MODEL,
+export type AiRuntimeDiagnostics = {
+  apiKey: ReturnType<typeof getGeminiApiKeyDiagnostics>;
+  keyFormatWarning: string | null;
+  dbAvailable: boolean;
+  settingsSource: "database" | "env_fallback" | "defaults";
+  forceEnableEnv: boolean;
 };
 
 function envForceEnableAi() {
@@ -21,25 +30,53 @@ function envForceEnableAi() {
 }
 
 async function fetchAiSettings(): Promise<AiSettingsRecord> {
-  const keyConfigured = Boolean(process.env.GEMINI_API_KEY?.trim());
+  const keyConfigured = isGeminiApiKeyConfigured();
   const forceEnable = envForceEnableAi();
 
   try {
     const row = await prisma.aiSettings.findUnique({ where: { id: 1 } });
     if (!row) {
+      const enabled = keyConfigured && (forceEnable || process.env.VERCEL === "1");
+      logAiEvent("settings_no_row", {
+        enabled,
+        keyConfigured,
+        forceEnable,
+        vercel: Boolean(process.env.VERCEL),
+      });
       return {
-        enabled: forceEnable && keyConfigured,
+        enabled,
         model: DEFAULT_AI_MODEL,
       };
     }
+
+    const enabled = forceEnable ? true : row.enabled;
+    logAiEvent("settings_loaded", {
+      enabled,
+      model: row.model,
+      source: "database",
+      forceEnable,
+    });
+
     return {
-      enabled: forceEnable ? true : row.enabled,
+      enabled,
       model: row.model || DEFAULT_AI_MODEL,
     };
-  } catch {
+  } catch (error) {
+    const enabled = keyConfigured && (forceEnable || process.env.VERCEL === "1");
+    logAiEvent(
+      "settings_db_error",
+      {
+        enabled,
+        keyConfigured,
+        forceEnable,
+        message: error instanceof Error ? error.message : String(error),
+      },
+      "warn"
+    );
+
     return {
-      ...defaults,
-      enabled: forceEnable && keyConfigured,
+      enabled,
+      model: DEFAULT_AI_MODEL,
     };
   }
 }
@@ -55,7 +92,31 @@ export async function getAiSettings(): Promise<AiSettingsRecord> {
 
 export async function getPublicAiSettings(): Promise<PublicAiSettings> {
   const settings = await getAiSettings();
-  return { enabled: settings.enabled && isAiConfigured() };
+  return { enabled: settings.enabled && isGeminiApiKeyConfigured() };
+}
+
+export async function getAiRuntimeDiagnostics(): Promise<AiRuntimeDiagnostics> {
+  const apiKey = getGeminiApiKeyDiagnostics();
+  const keyFormatWarning = validateGeminiApiKeyFormat();
+  let dbAvailable = false;
+  let settingsSource: AiRuntimeDiagnostics["settingsSource"] = "defaults";
+
+  try {
+    const row = await prisma.aiSettings.findUnique({ where: { id: 1 } });
+    dbAvailable = true;
+    settingsSource = row ? "database" : "env_fallback";
+  } catch {
+    dbAvailable = false;
+    settingsSource = "env_fallback";
+  }
+
+  return {
+    apiKey,
+    keyFormatWarning,
+    dbAvailable,
+    settingsSource,
+    forceEnableEnv: envForceEnableAi(),
+  };
 }
 
 export type AiSettingsInput = {
@@ -70,9 +131,10 @@ export async function updateAiSettings(data: AiSettingsInput) {
     update: data,
   });
   revalidateTag("ai-settings", "max");
+  logAiEvent("settings_updated", { enabled: data.enabled, model: data.model });
   return result;
 }
 
 export function isAiConfigured(): boolean {
-  return Boolean(process.env.GEMINI_API_KEY?.trim());
+  return isGeminiApiKeyConfigured();
 }

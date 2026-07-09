@@ -54,6 +54,7 @@ const nextConfig: NextConfig = {
     "@prisma/adapter-libsql",
     "@libsql/client",
     "better-sqlite3",
+    "@google/genai",
   ],
   outputFileTracingIncludes: {
     "/**/*": ["./dev.db"],

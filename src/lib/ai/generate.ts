@@ -1,8 +1,9 @@
-import { getAiProvider } from "@/lib/ai/provider";
+import { getGeminiApiKey } from "@/lib/ai/env";
+import { logAiEvent } from "@/lib/ai/logger";
 import type { FaqAiResult, GenerateTextParams, ProjectAiResult } from "@/lib/ai/types";
 
 export async function runAiGenerate(params: GenerateTextParams): Promise<string> {
-  const provider = getAiProvider("gemini");
+  const provider = (await import("@/lib/ai/provider")).getAiProvider("gemini");
   return provider.generateText(params);
 }
 
@@ -45,8 +46,9 @@ export async function analyzeDesignImage(
   locale: string
 ): Promise<string> {
   const ai = await import("@google/genai").then((m) => {
-    const key = process.env.GEMINI_API_KEY;
+    const key = getGeminiApiKey();
     if (!key) throw new Error("GEMINI_API_KEY_NOT_CONFIGURED");
+    logAiEvent("analyze_design_start", { model, locale, imageUrl });
     return new m.GoogleGenAI({ apiKey: key });
   });
 
